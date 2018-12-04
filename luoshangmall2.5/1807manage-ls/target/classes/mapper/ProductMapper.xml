@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ls.manage.mapper.ProductMapper">
+	<select id="queryProducts" parameterType="int" 
+	resultMap="productRM">
+	SELECT p.*,b.brand_name,b.category_name
+	FROM ls_product p,ls_product_brand b
+	WHERE p.brand_id=b.brand_id
+	AND p.brand_id=#{brandId}
+	AND p.product_status=1
+	</select>
+	
+	<resultMap type="Product" id="productRM">
+	<id property="productId" column="product_id"/>
+	<!-- 设置对多关系数据的封装 --><!-- select属性的值,指向一个select标签 -->
+	<collection property="style" 
+	javaType="ArrayList" ofType="ProductStyle" column="product_id" 
+	select="queryProductStyle"></collection>
+	</resultMap>
+	
+	<select id="queryProductStyle" resultType="ProductStyle">
+	select * from ls_product_style where product_id=#{productId}
+	</select>
+
+	<select id="queryBrandCount" resultType="int">
+	select count(brand_id) from ls_product where brand_id=#{brandId}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+	select count(product_id) from ls_product
+	</select>
+
+	<select id="queryMProducts" parameterType="int" 
+	resultMap="productRM">
+	SELECT p.*,b.brand_name,b.category_name
+	FROM ls_product p,ls_product_brand b
+	WHERE p.brand_id=b.brand_id
+	limit #{start},#{rows}
+	</select>
+	
+	<select id="queryBrands" resultType="string">
+		SELECT brand_name FROM ls_product_brand where category_name=#{categoryName}
+	</select>
+	
+	<select id="queryBrandId" resultType="int">
+		select brand_id from ls_product_brand where brand_name=#{brandName}
+	</select>
+	
+	<insert id="insertProduct" parameterType="Product">
+		insert into ls_product (product_id,product_name,product_price,product_imgurl,product_description,brand_id)
+	 	values(#{productId},#{productName},#{productPrice},#{productImgurl},#{productDescription},#{brandId})
+	</insert>
+
+	<insert id="insertProductStyle" parameterType="ArrayList">
+		insert into ls_product_style (style_size,style_num,product_id)
+		values
+		<foreach collection="list" index="index" item="s"  separator=",">
+		(
+		#{s.styleSize},
+		#{s.styleNum},
+		#{s.productId}
+		)
+		</foreach>
+	</insert>
+
+	<update id="updateProduct" parameterType="product">
+		update ls_product set
+		product_name=#{productName},
+		product_price=#{productPrice},
+		product_imgurl=#{productImgurl},
+		product_description=#{productDescription},
+		brand_id=#{brandId},
+		product_status=#{productStatus}
+		where product_id=#{productId}
+	</update>
+
+	<update id="updateProductStyle" parameterType="ArrayList">
+		<foreach collection="list" index="index" item="s"  separator=";">
+			update ls_product_style set
+			style_num=#{s.styleNum}
+			where product_id=#{s.productId}
+			and style_size=#{s.styleSize}
+		</foreach>
+	</update>
+
+	<update id="soldoutProduct" parameterType="String">
+	update ls_product set product_status=0 where product_id=#{productId}
+	</update>
+	
+	<update id="deleteProduct" parameterType="String">
+	delete from ls_cart where product_id=#{productId}
+	</update>
+	
+	<update id="putawayProduct" parameterType="String">
+	update ls_product set product_status=1 where product_id=#{productId}
+	</update>
+	
+
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

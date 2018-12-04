@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.ls.check.mapper.CheckMapper">
+<update id="UpdateCheckStatusByUUID"  parameterType="string">
+UPDATE ls_check SET check_status=1 WHERE check_id = #{uuid}
+</update>
+
+
+<select id="queryUserByID"  parameterType="string" resultType="User">
+SELECT * FROM ls_user WHERE user_id = #{userId};
+</select>
+
+<select id="queryCheckByUUID"  parameterType="string" resultType="Check">
+SELECT * FROM ls_check WHERE check_id = #{uuid};
+</select>
+
+<update id="UpdateUserByUserId"  parameterType="string">
+update  ls_user set user_type = 0 where user_id= #{user_id}
+</update>
+
+<insert id="insertCheck" parameterType="Check">
+insert into ls_check (check_id,check_email,user_id,check_status)
+values (#{checkId},#{checkEmail},#{userId},#{checkStatus});
+</insert>
+
+</mapper> 
+
+
+
+
+
+
+
+
+
+
+
+

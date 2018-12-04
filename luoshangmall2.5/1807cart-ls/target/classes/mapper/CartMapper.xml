@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ls.cart.mapper.CartMapper">
+	<select id="queryMyCart" parameterType="String" resultType="Cart">
+	select * from ls_cart where user_id=#{userId}
+	</select>
+	
+	<select id="findOne" parameterType="Cart" resultType="Cart">
+	select * from ls_cart where 
+	user_id=#{userId} and product_id=#{productId} and size=#{size}
+	</select>
+	
+	<insert id="addCart" parameterType="Cart">
+	insert into ls_cart(
+	user_id,
+	product_id,
+	product_image,
+	product_name,
+	product_price,
+	num,
+	size
+	)values(
+	#{userId},
+	#{productId},
+	#{productImage},
+	#{productName},
+	#{productPrice},
+	#{num},
+	#{size}
+	)
+	</insert>
+	
+	<update id="updateCartNum" parameterType="Cart">
+	update ls_cart set num=#{num} 
+	where user_id=#{userId} and product_id=#{productId} and size=#{size}
+	</update>
+	
+	<delete id="deteleCart" parameterType="Cart">
+	delete from ls_cart 
+	where user_id=#{userId} 
+	and product_id=#{productId} 
+	and size=#{size}
+	</delete>
+</mapper>

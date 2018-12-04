@@ -1,0 +1,10 @@
+xyz\ls\check\service\SendService.class
+xyz\ls\check\controller\SendController.class
+xyz\ls\check\util\MailUtil$1.class
+xyz\ls\check\mapper\CheckMapper.class
+xyz\ls\check\service\ActivateService.class
+xyz\ls\check\controller\ActivateController.class
+xyz\ls\check\pojo\Check.class
+xyz\ls\check\pojo\User.class
+xyz\ls\CheckStart.class
+xyz\ls\check\util\MailUtil.class
